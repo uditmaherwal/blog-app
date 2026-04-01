@@ -1,8 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const { User } = require('../models/user');
-const crypto = require('crypto');
-
 
 router.get('/login', (req, res) => {
     res.render('login');
@@ -14,12 +12,14 @@ router.get('/signup', (req, res) => {
 
 router.post('/login', async (req, res) => {
     const { email, password } = req.body;
-
-    const user = await User.matchPassword(email, password);
-
-    console.log("User", user);
-
-    return res.redirect('/');
+    try {
+        const token = await User.matchPasswordAndCreateToken(email, password);
+        return res.cookie('token', token).redirect('/');
+    } catch (error) {
+        return res.render('login', {
+            error: "Incorrect email or password. "
+        })
+    }
 })
 
 
