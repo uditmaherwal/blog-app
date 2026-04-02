@@ -3,17 +3,15 @@ const { validateToken } = require('../services/authentication'); // Import your 
 function authenticationMiddleware(cookieName) {
     return function (req, res, next) {
         const token = req.cookies[cookieName];
-        if (!token) {
-            return res.redirect('/login');
-        }
+
+        if (!token) return res.redirect('/user/login');
 
         try {
-            const userPayload = validateToken(token);
-            req.user = userPayload;
-        } catch (error) {
-
+            req.user = validateToken(token);
+            return next();
+        } catch (err) {
+            return res.redirect('/user/login');
         }
-        next();
     };
 }
 

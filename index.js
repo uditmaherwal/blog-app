@@ -14,11 +14,11 @@ app.set('views', path.resolve('./views'));
 
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(authenticationMiddleware('token')); // Replace 'token' with the actual cookie name
+app.use(authenticationMiddleware('token'));
 
 app.get('/', (req, res) => {
     res.render('home', {
-        user: req.user,
+        user: req.user
     });
 });
 
