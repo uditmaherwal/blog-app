@@ -4,6 +4,7 @@ const userRouter = require('./routes/user');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const authenticationMiddleware = require('./middlewares/authentication');
+const blogRouter = require('./routes/blog');
 
 const app = express();
 const PORT = 8000;
@@ -23,6 +24,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/user', userRouter);
+app.use('/blog', blogRouter);
 
 mongoose.connect(databaseUrl).then((e) => {
     console.log("MongoDB is now connected to your server");
