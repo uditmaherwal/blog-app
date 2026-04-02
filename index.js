@@ -18,7 +18,7 @@ app.use(authenticationMiddleware('token'));
 
 app.get('/', (req, res) => {
     res.render('home', {
-        user: req.user
+        user: req.user,
     });
 });
 

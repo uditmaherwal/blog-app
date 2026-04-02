@@ -4,13 +4,14 @@ function authenticationMiddleware(cookieName) {
     return function (req, res, next) {
         const token = req.cookies[cookieName];
 
-        if (!token) return res.redirect('/user/login');
+        if (!token) return next();
 
         try {
-            req.user = validateToken(token);
+            const userPayload = validateToken(token);
+            req.user = userPayload;
             return next();
         } catch (err) {
-            return res.redirect('/user/login');
+            return next();
         }
     };
 }
