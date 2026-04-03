@@ -4,7 +4,6 @@
     <%- include('./partials/head') %>
     <title>Add Blog</title>
   </head>
-
   <body>
     <%- include('./partials/scripts') %> <%- include('./partials/nav') %>
     <div class="container mt-4">
@@ -31,8 +30,12 @@
             />
           </div>
           <div class="mb-3">
-            <label for="body">Body</label>
-            <textarea name="body" class="form-control" id="body"></textarea>
+            <label for="content">Content</label>
+            <textarea
+              name="content"
+              class="form-control"
+              id="content"
+            ></textarea>
           </div>
           <div class="mb-3">
             <button class="btn btn-primary">Submit</button>
