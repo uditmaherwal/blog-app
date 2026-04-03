@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express = require('express');
 const path = require('path');
 const userRouter = require('./routes/user');
@@ -8,8 +10,6 @@ const blogRouter = require('./routes/blog');
 const Blog = require('./models/blog');
 
 const app = express();
-const PORT = 8000;
-const databaseUrl = 'mongodb://localhost:27017/blogify';
 
 app.set('view engine', 'ejs');
 app.set('views', path.resolve('./views'));
@@ -30,10 +30,10 @@ app.get('/', async (req, res) => {
 app.use('/user', userRouter);
 app.use('/blog', blogRouter);
 
-mongoose.connect(databaseUrl).then((e) => {
+mongoose.connect(process.env.MONGODB_URL).then((e) => {
     console.log("MongoDB is now connected to your server");
 });
 
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+app.listen(process.env.PORT, () => {
+    console.log(`Server is running on port ${process.env.PORT}`);
 });
