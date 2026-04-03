@@ -4,43 +4,41 @@ const multer = require('multer');
 const path = require('path');
 const router = Router();
 
-router.get('/add-new', (req, res) => {
-    res.render('addBlog', {
-        user: req.user,
-    });
-});
-
 const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, path.resolve('./public/uploads'));
+    destination: function (req, file, cb) {
+        cb(null, path.resolve(`./public/uploads/`));
     },
-    filename: (req, file, cb) => {
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-        const ext = path.extname(file.originalname);
-        cb(null, file.fieldname + '-' + uniqueSuffix + ext);
-    }
+    filename: function (req, file, cb) {
+        const fileName = `${Date.now()}-${file.originalname}`;
+        cb(null, fileName);
+    },
 });
 
 const upload = multer({ storage: storage });
 
-router.post('/', upload.single('coverImage'), async (req, res) => {
-    const { title, content } = req.body;
-    const coverImage = req.file ? `/uploads/${req.file.filename}` : null;
-
-    try {
-        const newBlog = new Blog({
-            title,
-            content,
-            coverImage,
-            createdBy: req.user._id
-        });
-        await newBlog.save();
-        return res.redirect(`/blog/${newBlog._id}`);
-    } catch (error) {
-        console.error(error);
-        return res.status(500).send('Internal Server Error');
-    }
+router.get("/add-new", (req, res) => {
+    return res.render("addBlog", {
+        user: req.user,
+    });
 });
 
+router.post("/", upload.single("coverImage"), async (req, res) => {
+    const { title, content } = req.body;
+    const blog = await Blog.create({
+        title,
+        content,
+        coverImageUrl: `/uploads/${req.file.filename}`,
+        createdBy: req.user._id
+    });
+    return res.redirect(`/blog/${blog._id}`);
+});
+
+router.get("/:id", async (req, res) => {
+    const blog = await Blog.findById(req.params.id).populate('createdBy');
+    return res.render("blog", {
+        user: req.user,
+        blog
+    });
+});
 
 module.exports = router;

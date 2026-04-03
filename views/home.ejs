@@ -7,26 +7,16 @@
 
   <body>
     <%- include('./partials/scripts') %> <%- include('./partials/nav') %>
-    <div class="container mt-3">
+    <div class="container mt-4 d-flex gap-4 flex-wrap align-items-stretch">
       <% blogs.forEach((blog) => { %>
         <div class="card" style="width: 18rem;">
-          <img src="<%= blog.coverImageUrl %>" class="card-img-top">
-          <div class="card-body">
-            <h5 class="card-title"><%= blog.title %></h5>
-            <a href="/blog/<%= blog._id %>" class="btn btn-primary">View Details</a>
+          <img src="<%= blog.coverImageUrl %>" class="card-img-top align-self-stretch" alt="Blog Cover Image" style="height: 200px; object-fit: cover;">
+          <div class="card-body d-flex flex-column">
+            <h5 class="card-title align-self-start"><%= blog.title %></h5>
+            <a href="/blog/<%= blog._id %>" class="btn btn-primary mt-auto">View</a>
           </div>
         </div>
       <% }) %>
-    </div>
-    <div class="container mt-4">
-      <h1>Welcome to Blogify !</h1>
-      <p>
-        Your one-stop destination for sharing your thoughts and ideas with the
-        world.
-        <br />
-        Explore the latest blogs, connect with fellow bloggers, and let your
-        creativity flow!
-      </p>
     </div>
   </body>
 </html>
